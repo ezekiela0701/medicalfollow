@@ -1,0 +1,11 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+# index:
+#     path: /{wildcard}
+#     controller:
+#         App\Controller\Front\HomeController::index
+#     requirements:
+#         wildcard:.*
