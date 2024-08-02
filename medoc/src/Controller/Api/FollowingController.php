@@ -3,53 +3,34 @@
 namespace App\Controller\Api ;
 
 
+use App\Services\Api\FollowingService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * Alert
- * @Route("api/medoc/")
- */
-class FollowingController
+#[Route('/api/medoc')]
+
+class FollowingController extends AbstractController
 {
     
-    protected $alertService ;
+    public $followingService ;
     
-    public function __construct(AlertService $alertService)
+    public function __construct(FollowingService $followingService)
     {
-        $this->alertService = $alertService ;
+        $this->followingService = $followingService ;
     }
 
-    /**
-     * @Route(
-     *     name="add_medoc",
-     *     path="/add",
-     *     methods={"POST"},
-     *     defaults={
-     *         "_controller"="src\Controller\api\FollowingController::add",
-     *         "_api_collection_operation_name"="add_medoc"
-     *     }
-     * )
-     */
+    
+    #[Route('/add', name: 'add_medoc')]
     public function add(Request $request)
     {
-        return $this->alertService->add($request) ;
+        return $this->followingService->add($request) ;
     }
  
-    /**
-     * @Route(
-     *     name="list_medoc",
-     *     path="/list",
-     *     methods={"GET"},
-     *     defaults={
-     *         "_controller"="src\Controller\api\FollowingController::add",
-     *         "_api_collection_operation_name"="list_medoc"
-     *     }
-     * )
-     */
+    #[Route('/list', name: 'list_medoc')]
     public function list(Request $request)
     {
-        return $this->alertService->list($request) ;
+        return $this->followingService->list($request) ;
     }
 
     // /**

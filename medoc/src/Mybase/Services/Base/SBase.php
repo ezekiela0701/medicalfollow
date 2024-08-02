@@ -30,19 +30,9 @@ class SBase implements SBaseInterface {
      protected $entityManager;
 
      /**
-      * @var ContainerInterface
-      */
-     protected $container;
-
-     /**
      * @var SerializerInterface
      */
     protected  $serializer;
-
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    protected $passwordEncoder;
 
     /**
      * @var TokenGeneratorInterface
@@ -54,19 +44,15 @@ class SBase implements SBaseInterface {
      * Base service constructor
      *
      * @param EntityManagerInterface $entityManager
-     * @param ContainerInterface $container
      * @param SerializerInterface $serializer
      * @param TokenGeneratorInterface $tokenGenerator
-     * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container , SerializerInterface $serializer 
-    , TokenGeneratorInterface $tokenGenerator , UserPasswordEncoderInterface $passwordEncoder )
+    public function __construct(EntityManagerInterface $entityManager,  SerializerInterface $serializer 
+    , TokenGeneratorInterface $tokenGenerator  )
     {
         $this->serializer       = $serializer;
-        $this->container        = $container;
         $this->entityManager    = $entityManager;
         $this->tokenGenerator   = $tokenGenerator ; 
-        $this->passwordEncoder  = $passwordEncoder ;
 
     }
 
@@ -106,20 +92,6 @@ class SBase implements SBaseInterface {
     public function getParameter(string $name)
     {
         return $this->container->getParameter($name);
-    }
-
-    /**
-     * Gets the service class for the given id from Container
-     *
-     * @param string $id The service Id
-     * 
-     * @return mixed The service class
-     * 
-     * @throws InvalidArgumentException if the service is not defined
-     */
-    public function getService(string $id)
-    {
-        return $this->container->get($id);
     }
 
     /**
@@ -233,12 +205,6 @@ class SBase implements SBaseInterface {
     public function generateToken()
     {
         return $this->tokenGenerator->generateToken();
-    }
-
-    public function encodePassword($password)
-    {
-        $user = New User() ;
-        return $this->passwordEncoder->encodePassword($user , $password) ;
     }
 
     public function countPagination($total,$paginate)

@@ -10,8 +10,6 @@ interface SBaseInterface
 
     public function getParameter(string $name);
 
-    public function getService(string $id);
-
     public function save($object);
 
     public function remove($object);

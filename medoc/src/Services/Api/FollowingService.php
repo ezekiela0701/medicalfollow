@@ -13,57 +13,35 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FollowingService extends SBase
 {
-    // public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container , SerializerInterface $serializer 
-    // , TokenGeneratorInterface $tokenGenerator , UserPasswordEncoderInterface $passwordEncoder,  MailToSend $mailer ,  Sendmail $sendmail , Utils $utils , Formule $formule ,
-    // TraitementUrl $traitementUrl , GetloyerprospectifImmogo $getRentImmogo , EntityManagerInterface $em  , ParameterBagInterface $parameterBagInterface)
-    // {
-    //     parent::__construct($entityManager, $container , $serializer , $tokenGenerator , $passwordEncoder) ;
-        
-    //     $this->utils = $utils ;
-
-    // }
 
     public function add(Request $request)
     {
 
         $datas = $this->getPostedData($request) ;
 
-        $alert = new Following() ;
+        $following = new Following() ;
+            
+        $following  = $this->deserialize($datas, Following::class, 'json');
+        $following->setStatus(true) ;
 
-        if(isset($datas['idThepropertyType'])){
+        $this->save($following) ;
 
-            $idThepropertyType = $datas['idThepropertyType'] ;
-            $thepropertyType = $this->getRepository(PropertyType::class)->findOneBy(['id' => $idThepropertyType]) ;
-
-            $alert->setPropertyType($thepropertyType) ;
+        $datas = $this->serialize($following, 'json' , ['groups' => 'medocLists:read' ]);
         
-        }
-
-        if($alert !=null || !empty($alert)){
-            
-            $alert->setUser($currentUser) ;
-
-            $this->save($alert) ;
-
-            $datas = $this->serialize($alert, 'json' , ['groups' => 'syndicdocumentcomment:read' ]);
-            
-            return $this->jsonResponseOk($datas , "Added alert with success" ) ;
-
-        }
-
-        return $this->jsonResponseNotFound("No result found") ;
+        return $this->jsonResponseOk($datas , "Added following medoc with success" ) ;
 
     }
     
     public function list(Request $request)
     {
-        $alertLists     = $this->getRepository(Alert::class)->findBy(['user' => $currentUser]) ;
 
-        if($alertLists){
+        $medocLists     = $this->getRepository(Following::class)->findBy(['status' => 1]) ;
+
+        if($medocLists){
             
-            $datas = $this->serialize($alertLists, 'json', ["groups"=>"alert:read"]);
+            $datas = $this->serialize($medocLists, 'json', ["groups"=>"medocLists:read"]);
 
-            return $this->jsonResponseOk($datas , "offer inserted" ) ;
+            return $this->jsonResponseOk($datas , "medoc listing done" ) ;
 
         }
         
