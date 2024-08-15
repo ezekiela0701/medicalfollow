@@ -1,26 +1,20 @@
-<template>
-  <input type="text" v-model="name">
-  <!--- <button @click="refreshHello">Demander un bonjour !</button> -->
-  <button @keyup="refreshHello">Demander un bonjour !</button>
-  <h1 v-show="!!hello">{{ hello }}</h1>
-</template>
-<script>
-export default {
-  data() {
-    return {
-      name: '',
-      hello: ''
-    }
-  },
-  methods: {
-    refreshHello() {
-      if (this.name) {
-        fetch("/app/api/helloworld/" + this.name, {"method": "GET"})
-        .then(response => response.json())
-        .then(result => this.hello = result);
-      }
-    }
-  }
-}
+<script setup>
+  import { RouterLink, RouterView } from 'vue-router'
+  // import HelloWorld from './components/HelloWorld.vue'
 </script>
 
+<template>
+  <header>
+
+    <div class="wrapper">
+      <HelloWorld msg="You did it!" />
+
+      <nav>
+        <RouterLink to="/">List des médicaments</RouterLink>
+        <RouterLink to="/medocAdd">Ajouter médicament</RouterLink>
+      </nav>
+    </div>
+  </header>
+
+  <RouterView />
+</template>

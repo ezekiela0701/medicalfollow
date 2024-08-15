@@ -8,9 +8,10 @@ import './styles/app.css';
 
 import { createApp } from 'vue';
 import App from './js/App.vue';
-
-const app = createApp(App)
+import router from './router';
 
 // app.mount('#vue-app');
-createApp(App).mount('#vue-app');
+createApp(App)
+.use(router)
+.mount('#vue-app');
 // console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
